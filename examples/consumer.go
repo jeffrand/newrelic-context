@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/smacker/newrelic-context"
+	"github.com/jeffrand/newrelic-context"
 	"log"
 	"net/http"
 )

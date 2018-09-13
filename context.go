@@ -4,10 +4,9 @@ import (
 	"context"
 
 	"github.com/jinzhu/gorm"
-	"github.com/newrelic/go-agent"
-	"github.com/smacker/newrelic-context/nrgorm"
-	"github.com/smacker/newrelic-context/nrredis"
-	redis "gopkg.in/redis.v5"
+	"github.com/jeffrand/newrelic-context/nrgorm"
+	"github.com/jeffrand/newrelic-context/nrredis"
+	"github.com/go-redis/redis"
 )
 
 type contextKey int

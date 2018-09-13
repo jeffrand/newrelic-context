@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"github.com/smacker/newrelic-context"
+	"github.com/jeffrand/newrelic-context"
 	"net/http"
 )
 

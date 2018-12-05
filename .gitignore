@@ -1,1 +1,5 @@
 /nrgorm/foo.db
+/newrelic-context.iml
+/.idea/
+/vendor/
+!/vendor/vendor.json

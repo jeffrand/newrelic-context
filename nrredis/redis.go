@@ -7,7 +7,7 @@ import (
 	"github.com/go-redis/redis"
 )
 
-// WrapRedisClient adds newrelic measurements for commands and returns cloned client
+// WrapRedisClient adds newrelic measurements for commands and returns cloned Client
 func WrapRedisClient(txn newrelic.Transaction, c *redis.Client) *redis.Client {
 	if txn == nil {
 		return c
@@ -19,7 +19,27 @@ func WrapRedisClient(txn newrelic.Transaction, c *redis.Client) *redis.Client {
 
 	copy.WrapProcess(func(oldProcess func(cmd redis.Cmder) error) func(cmd redis.Cmder) error {
 		return func(cmd redis.Cmder) error {
-			defer segmentBuilder(txn, newrelic.DatastoreRedis, strings.Split(cmd.String(), " ")[0]).End()
+			defer segmentBuilder(txn, newrelic.DatastoreRedis, strings.Split(cmd.Name(), " ")[0]).End()
+
+			return oldProcess(cmd)
+		}
+	})
+	return copy
+}
+
+// WrapRedisClient adds newrelic measurements for commands and returns cloned ClusterClient
+func WrapRedisClusterClient(txn newrelic.Transaction, c *redis.ClusterClient) *redis.ClusterClient {
+	if txn == nil {
+		return c
+	}
+
+	// clone using context
+	ctx := c.Context()
+	copy := c.WithContext(ctx)
+
+	copy.WrapProcess(func(oldProcess func(cmd redis.Cmder) error) func(cmd redis.Cmder) error {
+		return func(cmd redis.Cmder) error {
+			defer segmentBuilder(txn, newrelic.DatastoreRedis, strings.Split(cmd.Name(), " ")[0]).End()
 
 			return oldProcess(cmd)
 		}
